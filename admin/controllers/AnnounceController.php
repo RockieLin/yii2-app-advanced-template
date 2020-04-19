@@ -90,7 +90,7 @@ class AnnounceController extends BaseController {
             $uploadPath = Yii::getAlias('@common') . "/web";
 
             $attr = "image";
-            $type = "announcement";
+            $type = "announce";
             $_image = \yii\web\UploadedFile::getInstance($model, $attr);
             if ($_image) {
                 $imageFileName = "/uploads/{$type}/" . uniqid() . '.';

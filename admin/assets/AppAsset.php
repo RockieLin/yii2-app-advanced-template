@@ -27,6 +27,6 @@ class AppAsset extends AssetBundle {
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'common\assets\Theme\ModernBlueAsset',
-        'common\assets\plugin\JqueryLoadingAsset'
+        'common\assets\Plugin\JqueryLoadingAsset'
     ];
 }

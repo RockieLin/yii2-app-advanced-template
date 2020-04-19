@@ -89,14 +89,9 @@ $config = [
             ],
         ],
         'urlManager' => [
-            'class' => 'codemix\localeurls\UrlManager',
-            'languages' => [
-                'en',
-                'zh-TW',
-                'zh-CN'
-            ],
-            'enableDefaultLanguageUrlCode' => false,
-            'enableLanguagePersistence' => true,
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            //'rules'           => require(__DIR__ . '/routes.php'),
         ],
         'i18n' => [
             'translations' => [

@@ -1,0 +1,421 @@
+button {
+    margin: 0px 3px;
+}
+
+hr {
+    border-top-color: #efefef;
+    border-bottom: none;
+    margin: 10px 0px;
+}
+
+.hint-block, .help-block {
+    font-style: italic;
+    font-weight: 800;
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+.paceSimple .container-fluid {
+    visibility: visible;
+}
+
+input[type="text"]:focus, input[type="text"]:active, input[type="text"]:hover {
+    background-color: #ffffff;
+}
+
+input[type=text], input[type=password], select, textarea {
+    color: inherit;
+}
+
+.sidebar.sidebar-fusion #menu > div > ul {
+    top: inherit;
+}
+
+.img-r100-40 {
+    width: 100px;
+    height: 40px;
+
+}
+
+.img-r200-80 {
+    width: 200px;
+    height: 80px;
+}
+
+.img-r200-200 {
+    width: 200px;
+    height: 200px;
+}
+
+.img-r100-40 {
+    width: 100px;
+    height: 40px;
+}
+
+.img-s100 {
+    width: 100px;
+    height: 100px;
+
+}
+
+.img-s50 {
+    width: 50px;
+    height: 50px;
+
+}
+
+.img-s30 {
+    width: 30px;
+    height: 30px;
+
+}
+
+.form-group {
+    min-height: 84px;
+}
+
+.imageBlock .form-group {
+    height: 0px;
+    min-height: 0px;
+}
+
+@media (min-width: 1200px) {
+    html.app.navbar-sticky .layout-app {
+        top: 50px;
+    }
+
+    html .layout-app .col-separator-first,
+    html.app .layout-app .col-separator-first {
+        margin-left: 0px;
+        left: 0px;
+    }
+}
+
+.table-primary th a {
+    color: inherit;
+
+}
+
+.table-primary a.btn {
+    margin: 2px;
+
+}
+
+.table-primary {
+    margin: 10px 0;
+}
+
+.error {
+    color: red;
+}
+
+.modal-content .container-fluid {
+    background-color: #FFF;
+}
+
+@media (min-width: 769px) {
+    #external-events {
+        position: fixed;
+        width: 20%;
+    }
+}
+
+#external-events .template li {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 1000;
+}
+
+#external-events .template li i:before {
+    font-size: 14px;
+    color: #fff;
+    top: 0;
+    left: 0;
+    height: 26px;
+    width: 26px;
+    text-align: center;
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+}
+
+#external-events li {
+    margin: 0 0 8px;
+}
+
+.fc-event, .fc-event:hover {
+    height: auto;
+    font-size: 1em;
+    box-shadow: 0 2px 0;
+
+}
+
+.fc-time-grid-event .fc-time {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#external-events .template li {
+    color: #076D61;
+    font-size: 1.2em;
+    height: 35px;
+    line-height: inherit;
+}
+
+.fc-content {
+    height: auto;
+    font-size: 1em;
+    text-align: center;
+    color: #076D61;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#modalSpace .modal-dialog {
+    width: 100% !important;
+}
+
+.modal-content {
+    padding: 5px;
+}
+
+.fc-event .fc-bg {
+    border: 1px #000000 solid;
+}
+
+.fc-time-grid-container, .fc-day-grid-container {
+    height: 100% !important;
+}
+
+#brandWrapper {
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .product-calender {
+        max-height: 450px;
+        overflow: scroll;
+    }
+
+    .product-item {
+        max-height: 350px;
+        overflow: scroll;
+    }
+}
+
+.sidebar.sidebar-fusion #menu > div > ul {
+    height: 93%;
+    overflow: auto;
+    padding-bottom: 100px;
+}
+
+.kv-expand-header-cell, .kv-expand-icon-cell {
+    font-size: 1em;
+}
+
+.nav-pills > li > a {
+    padding: 5px;
+}
+
+.grid-operate-col {
+    width: 200px;
+}
+
+.template {
+    padding-left: 0;
+}
+
+#external-events .nav-tabs li {
+    height: auto;
+    background-color: #FFF;
+}
+
+#external-events .tab-content {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+#external-events li, .fc-event, .fc-event:hover {
+    text-shadow: none;
+}
+
+div.row, ul.row {
+    margin: 0;
+}
+
+@media screen and (min-width: 768px) {
+    .modal-dialog {
+        width: 70%;
+    }
+}
+
+.username .media span {
+    color: #FFF;
+}
+
+.fc-time-grid .fc-slats td {
+    height: 2.5em;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: middle;
+}
+
+.table .filters .form-control {
+    display: inline;
+}
+
+.login .placeholder {
+    font-size: 80px;
+}
+
+html.app .loginWrapper .layout-app {
+    top: 20px;
+}
+
+.well {
+    position: inherit;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+
+.file-preview-image {
+    width: 175px;
+    height: 150px;
+}
+
+.input-group-addon.btn {
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hideSelect2 .select2-container--krajee .select2-results > .select2-results__options {
+    display: none;
+}
+
+.titleText {
+    font-size: 24px;
+    font-weight: 700;
+    padding-left: 10px;
+    padding-right: 8px;
+    position: relative;
+    top: -1px;
+    color: #fff;
+    line-height: 59px;
+}
+
+.icon-btn-block {
+    display: inline-block;
+    text-align: center;
+    margin: 20px;
+}
+
+.icon-btn-block a {
+    color: #4d4d4d;
+}
+
+.chart-full-height-xs {
+    height: 320px;
+}
+
+@media screen and (max-width: 768px) {
+    .chart-full-height-xs {
+        height: auto;
+    }
+}
+
+.noticeLabel {
+    color: #1BA293;
+    font-size: 1.2em;
+}
+
+.collapse-btn {
+    cursor: pointer;
+}
+
+.widget .widget-body {
+    padding: 5px;
+}
+
+.widget {
+    border-radius: 3px;
+}
+
+.widget.search {
+    background-color: #f7f7f7;
+}
+
+.widget.search .form-group {
+    min-height: auto;
+    margin-bottom: 0px;
+}
+
+.sidebar.sidebar-fusion #footer {
+    left: 150px;
+}
+
+.sidebar.sidebar-fusion #content {
+    margin-left: 150px;
+}
+
+.sidebar.sidebar-fusion #menu {
+    width: 150px;
+}
+
+.sidebar.sidebar-fusion #menu #sidebar-fusion-wrapper #brandWrapper {
+    width: 150px;
+}
+
+.sidebar.sidebar-fusion #menu > div ul {
+    width: 150px;
+}
+
+.app.sidebar.sidebar-fusion .navbar.main {
+    left: 150px;
+}
+
+.sidebar.sidebar-fusion #menu #sidebar-fusion-wrapper #brandWrapper > a > span.text {
+    font-size: 16px;
+}
+
+.sidebar.sidebar-fusion #menu > div > ul > li > ul > li a {
+    padding: 0 0 0 28px;
+}
+
+.sidebar.sidebar-fusion #menu > div ul > li > a {
+    height: 40px;
+    line-height: 40px;
+}
+
+.navbar .user-action.user-action-btn-navbar {
+    padding: 5px;
+}
+
+.alert {
+    position: fixed;
+    width: 300px;
+    right: 3px;
+    z-index: 99999;
+    top: 40px;
+}
+
+.imageLink{
+    display: block;
+}
+
+.imageContent {
+    max-width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #d2d0d0;
+}
+.uploadButton{
+    margin-top: 30px;
+}

@@ -1,0 +1,12 @@
+# Git
+.git
+
+# Runtime
+admin/runtime
+common/runtime
+front/runtime
+api/runtime
+
+# Assets
+admin/web/assets
+front/web/assets

@@ -1,0 +1,93 @@
+{
+  "name": "rockielin/yii2-app-advanced-template",
+  "description": "Yii2 advanced template for demo",
+  "type": "project",
+  "keywords": [
+    "yii2",
+    "framework",
+    "advanced",
+    "project template"
+  ],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Rockie Lin",
+      "email": "rockie.lin.tw@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/RockieLin/yii2-app-advanced-template/issues?state=open",
+    "source": "https://github.com/RockieLin/yii2-app-advanced-template"
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0.0",
+    "yiisoft/yii2": "2.0.27",
+    "yiisoft/yii2-bootstrap": "2.0.10",
+    "yiisoft/yii2-swiftmailer": "2.1.1",
+    "yiisoft/yii2-jui": "2.0.7",
+    "yiisoft/yii2-redis": "2.0.12",
+    "yiisoft/yii2-imagine": "2.2.0",
+    "yiisoft/yii2-authclient": "2.2.7",
+    "vova07/yii2-imperavi-widget": "2.0.11",
+    "trntv/yii2-datetime-widget": "1.1.1",
+    "kartik-v/yii2-export": "1.4.0",
+    "kartik-v/yii2-checkbox-x": "1.0.4",
+    "kartik-v/yii2-tabs-x": "1.2.7",
+    "kartik-v/yii2-widgets": "3.4.1",
+    "kartik-v/yii2-date-range": "1.7.1",
+    "kriss/yii2-log-reader": "2.2.5",
+    "rmrevin/yii2-minify-view": "2.0.0",
+    "2amigos/qrcode-library": "1.1.2",
+    "steelywing/chinese": "0.5.3",
+    "codemix/yii2-localeurls": "1.7.1",
+    "nirvana-msu/yii2-infinite-scroll": "1.0.*@dev"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.0.0",
+    "yiisoft/yii2-gii": "~2.0.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "codeception/base": "^2.4.0",
+    "phpunit/phpunit": "~6.5.5",
+    "codeception/verify": "~1.0.0"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "config": {
+    "discard-changes": true,
+    "process-timeout": 1800,
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "yii\\composer\\Installer::postInstall"
+    ]
+  },
+  "extra": {
+    "yii\\composer\\Installer::postInstall": {
+      "setPermission": [
+        {
+          "admin/runtime": "0777",
+          "admin/web/assets": "0777",
+          "admin/web/minify": "0777",
+          "common/runtime": "0777",
+          "common/web/assets": "0777",
+          "common/web/uploads": "0777",
+          "front/runtime": "0777",
+          "front/web/assets": "0777",
+          "front/web/minify": "0777",
+          "api/runtime": "0777",
+          "api/web/assets": "0777",
+          "yii": "0755"
+        }
+      ]
+    }
+  }
+}

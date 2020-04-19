@@ -1,0 +1,54 @@
+.brandName {
+    color: #f99816;
+    font-weight: bold;
+    display: block;
+}
+
+form .widget {
+    margin-top: 20px;
+}
+
+.notice {
+    font-style: italic;
+    font-weight: 800;
+    color: #f34646;
+    padding-left: 5px;
+}
+
+.notice-black {
+    font-style: italic;
+    font-weight: 800;
+    color: #000000;
+    padding-left: 5px;
+}
+.widget.search .kv-drp-dropdown {
+    background-color: #FFF;
+}
+
+.tooltip > .tooltip-inner {
+    color: #ffffff;
+}
+
+.warning-summary {
+    color: #a97229;
+    background: #ffebd0;
+    border-left: 3px solid #f99816;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+    display: inline-block;
+}
+
+.info-summary {
+    color: #218da7;
+    background: #e2fcff;
+    border-left: 3px solid #60b5fb;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+    display: inline-block;
+}
+
+
+.iti--allow-dropdown {
+    display: block;
+}
+

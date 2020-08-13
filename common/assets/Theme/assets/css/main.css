@@ -419,3 +419,28 @@ html.app .loginWrapper .layout-app {
 .uploadButton{
     margin-top: 30px;
 }
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+    background-color: initial;
+}
+
+ul.menu li > a > span {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 85%;
+}
+
+.sidebar.sidebar-fusion #menu > div ul > li > a[data-toggle=collapse]:after {
+    right: 15px;
+}
+
+.sidebar.sidebar-fusion #menu > div ul > li > a {
+    padding-left: 10px;
+    text-align: center;
+}
+
+.sidebar.sidebar-fusion #menu > div > ul > li > ul > li a {
+    padding-left: 15px;
+}

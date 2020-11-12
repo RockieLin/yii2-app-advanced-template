@@ -15,7 +15,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/ssl:/etc/nginx/ssl
-      - ./../:/var/www/html/fate
+      - ./../../:/var/www/html
       - ./log/nginx:/var/log/nginx
     restart: always
     container_name: nginx
@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile
     image: php74-fpm
     volumes:
-      - ./../:/var/www/html/yii2-app-advanced-template
+      - ./../../:/var/www/html
       - ./php/fpm/php-fpm.conf:/etc/php/7.4/fpm/php-fpm.conf
       - ./php/fpm/php.ini:/etc/php/7.4/fpm/php.ini
       - ./php/fpm/www.conf:/etc/php/7.4/fpm/pool.d/www.conf

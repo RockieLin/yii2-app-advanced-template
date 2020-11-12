@@ -32,10 +32,10 @@ services:
     image: php:bao
     volumes:
       - ./../:/var/www/html/yii2-app-advanced-template
-      - ./php/fpm/php-fpm.conf:/etc/php/7.1/fpm/php-fpm.conf
-      - ./php/fpm/php.ini:/etc/php/7.1/fpm/php.ini
-      - ./php/fpm/www.conf:/etc/php/7.1/fpm/pool.d/www.conf
-      - ./php/cli/php.ini:/etc/php/7.1/cli/php.ini
+      - ./php/fpm/php-fpm.conf:/etc/php/7.4/fpm/php-fpm.conf
+      - ./php/fpm/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./php/fpm/www.conf:/etc/php/7.4/fpm/pool.d/www.conf
+      - ./php/cli/php.ini:/etc/php/7.4/cli/php.ini
       - ./supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./supervisor/conf.d:/etc/supervisor/conf.d
       - ./log/supervisor:/etc/supervisord.d/log

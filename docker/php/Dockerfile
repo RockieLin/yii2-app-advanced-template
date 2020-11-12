@@ -1,7 +1,7 @@
-FROM phpdockerio/php71-fpm:latest
+FROM phpdockerio/php74-fpm:latest
 ARG DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /etc/php/7.1/fpm
+WORKDIR /etc/php/7.4/fpm
 
 ### set timezome
 ENV TZ=Asia/Taipei
@@ -14,12 +14,12 @@ RUN chown nginx:nginx /var/lib/php/session && chown nginx:nginx /var/lib/php/wsd
 RUN chmod 770 /var/lib/php/session && chmod 770 /var/lib/php/wsdlcache && chmod 770 /var/log/php
 
 RUN apt-get update
-RUN apt-get install -y software-properties-common python-software-properties
+RUN apt-get install -y software-properties-common
 
 RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && apt-get update && \
-    apt-get install php7.1-mbstring php7.1-common php-redis php7.1-bcmath php7.1-gd php-imagick php7.1-intl php7.1-soap -y
+    apt-get install php7.4-mysqli php7.4-mbstring php7.4-common php-redis php7.4-bcmath php7.4-gd php-imagick php7.4-intl php7.4-soap -y
 
-RUN apt install php7.1-imagick php7.1-memcached php-apcu php7.1-redis -y && \
+RUN apt install php7.4-imagick php7.4-memcached php-apcu php7.4-redis -y && \
     apt-get update && \
     apt-get install -y  git \
     openssl \
@@ -27,15 +27,6 @@ RUN apt install php7.1-imagick php7.1-memcached php-apcu php7.1-redis -y && \
     libpng-dev \
     gcc \
     curl \
-    php7.1-mysqli \
-    php7.1-mbstring \
-    php7.1-common \
-    php-redis \
-    php7.1-bcmath \
-    php7.1-gd \
-    php-imagick \
-    php7.1-intl \
-    php7.1-soap \
     git \
     openssl \
     wget \

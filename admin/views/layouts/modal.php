@@ -3,8 +3,8 @@
 use admin\widgets\Alert;
 
 $this->beginContent('@app/views/layouts/base.php');
-$this->registerCss("body { background-color: transparent; }");
-$this->registerJs('$(parent.document).find("iframe.iframe-modal").css("height", 1500);');
+$this->registerCss("body { background-color: transparent; } .modal-content{ max-height: 94vh; } .modal-content .innerAll{ max-height: 83vh; overflow: scroll; }");
+$this->registerJs('$(parent.document).find("iframe.iframe-modal").css("height", 10000);');
 $this->registerJs("stopLoading();");
 
 if (isset(Yii::$app->params["modalWidth"])) {

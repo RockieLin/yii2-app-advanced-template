@@ -12,7 +12,7 @@ function ModalInit() {
 }
 
 function showIframeModel(e) {
-    var t = '<div class="modal fade" id="commonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+    var t = '<div class="modal fade" id="commonModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow: hidden;">';
     t += '<div class="modal-dialog" style="text-align: center;">';
     t += '<div class="modal-content autoModal" style="margin: auto; background: none; box-shadow:none;border:none;">';
     t += '<div class="modal-body">';

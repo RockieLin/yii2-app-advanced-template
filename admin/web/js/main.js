@@ -16,7 +16,7 @@ function showIframeModel(e) {
     t += '<div class="modal-dialog" style="text-align: center;">';
     t += '<div class="modal-content autoModal" style="margin: auto; background: none; box-shadow:none;border:none;">';
     t += '<div class="modal-body">';
-    t += '<iframe class="iframe-modal autoModal" frameborder="0" style="overflow:auto;margin:0;height:100%;width:100%;min-height: 80%;" scrolling="no" src="' + e + '"></iframe>';
+    t += '<iframe class="iframe-modal autoModal" frameborder="0" style="overflow:auto;margin:0;height:100%;width:100%;min-height: 80%;max-height: 95vh;" scrolling="no" src="' + e + '"></iframe>';
     t += "</div>";
     t += "</div>";
     t += "</div>";

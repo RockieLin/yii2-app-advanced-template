@@ -6,6 +6,12 @@ just practice dont use in production.
 [![Latest Stable Version](https://poser.pugx.org/rockielin/yii2-app-advanced-template/v/stable.png)](https://packagist.org/packages/rockielin/yii2-app-advanced-template)
 [![Total Downloads](https://poser.pugx.org/rockielin/yii2-app-advanced-template/downloads.png)](https://packagist.org/packages/rockielin/yii2-app-advanced-template)
 
+Docker安裝
+------------
+~~~
+https://docs.docker.com/compose/install/
+~~~
+
 安裝
 ------------
 若尚未安裝composer, 先執行composer安裝

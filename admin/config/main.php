@@ -1,19 +1,5 @@
 <?php
-//log檔
-$logFils = [];
-foreach (preg_grep('/^([^.])/', scandir(Yii::getAlias("@front/runtime/logs"))) as $_val) {
-    $logFils["Front_" . $_val] = Yii::getAlias("@front/runtime/logs/{$_val}");
-}
-foreach (preg_grep('/^([^.])/', scandir(Yii::getAlias("@admin/runtime/logs"))) as $_val) {
-    $logFils["Admin_" . $_val] = Yii::getAlias("@admin/runtime/logs/{$_val}");
-}
-foreach (preg_grep('/^([^.])/', scandir(Yii::getAlias("@common/runtime/logs"))) as $_val) {
-    $logFils["Common" . $_val] = Yii::getAlias("@common/runtime/logs/{$_val}");
-}
-foreach (preg_grep('/^([^.])/', scandir(Yii::getAlias("@api/runtime/logs"))) as $_val) {
-    $logFils["API_" . $_val] = Yii::getAlias("@api/runtime/logs/{$_val}");
-}
-arsort($logFils);
+
 return [
     'id' => 'Admin',
     'basePath' => dirname(__DIR__),
@@ -26,7 +12,13 @@ return [
     'modules' => [
         'log-reader' => [
             'class' => 'kriss\logReader\Module',
-            'aliases' => $logFils,
+            'aliases' => [
+                'Front' => "@front/runtime/logs/log",
+                'Common' => "@common/runtime/logs/log",
+                'Api' => "@api/runtime/logs/log",
+                'Console' => "@console/runtime/logs/log",
+                'Admin' => "@admin/runtime/logs/log",
+            ],
         ],
         'gridview' => [
             'class' => '\kartik\grid\Module'

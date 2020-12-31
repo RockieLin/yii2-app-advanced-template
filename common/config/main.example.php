@@ -69,22 +69,41 @@ $config = [
         'log' => [
             'traceLevel' => 3,
             'targets' => [
-                [
+                "info" => [
                     'class' => 'yii\log\FileTarget',
+                    'maxFileSize' => 10240 * 1, //10MB
+                    'maxLogFiles' => '50',
+                    'dirMode' => 0777,
+                    'fileMode' => 0777,
                     'except' => [
-                        'yii\web\HttpException:404'
+                        'yii\web\Session:*',
+                        'yii\db\*',
+                        'yii\web\User:*',
+                        'yii\debug\Module:*'
                     ],
                     'levels' => [
                         'info',
+                    ],
+                    'logVars' => [],
+                    'logFile' => '@app/runtime/logs/log.' . date("Ymd", time()),
+                ],
+                "error" => [
+                    'class' => 'yii\log\FileTarget',
+                    'maxFileSize' => 10240 * 1, //10MB
+                    'maxLogFiles' => '50',
+                    'dirMode' => 0777,
+                    'fileMode' => 0777,
+                    'except' => [
+                        'yii\debug\Module:*',
+                        'yii\web\HttpException:401',
+                        'yii\web\HttpException:404',
+                    ],
+                    'levels' => [
                         'error',
                         'warning'
                     ],
-                    'categories' => [
-//                        'yii\*',
-                        'application'
-                    ],
-                    'logVars' => ['_GET', '_POST', '_SERVER'],
-                    'logFile' => '@app/runtime/logs/' . date("Y-m-d", time()) . '.txt',
+                    'logVars' => ['_GET', '_POST', '_SERVER.argv'],
+                    'logFile' => '@app/runtime/logs/log.' . date("Ymd", time()),
                 ],
             ],
         ],

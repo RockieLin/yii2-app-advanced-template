@@ -14,8 +14,10 @@ class Base extends ActiveRecord {
         "message" => null];
 
     public function init() {
-        parent::init();
-        $this->loadDefaultValues();
+        //讀取db預設值
+        if (static::tableName() != "{{%base}}") {
+            $this->loadDefaultValues();
+        }
     }
 
     public function beforeSave($insert) {

@@ -57,10 +57,6 @@ form.inline .form-group .control-label {
     background-color: #FFF;
 }
 
-.form-group {
-    min-height: auto;
-}
-
 .tooltip > .tooltip-inner {
     color: #ffffff;
 }
@@ -280,6 +276,11 @@ form.inline .form-group .control-label {
     height: 100px;
 }
 
+.img-r100-100 {
+    width: 100px;
+    height: 100px;
+}
+
 .img-r40-40 {
     width: 40px;
     height: 40px;
@@ -290,8 +291,12 @@ form.inline .form-group .control-label {
     overflow-y: scroll;
 }
 
-.form-high .form-group {
-    min-height: 84px;
+.form-low .form-group {
+    min-height: auto;
+}
+
+.form-control {
+    border-color: #8f8c8c !important;
 }
 
 .modal-header-custom {
@@ -305,4 +310,116 @@ form.inline .form-group .control-label {
 
 .mix-tab .tab-content > .tab-pane {
     padding-top: 10px;
+}
+
+.multipleImageBlock {
+    display: inline-block;
+    display: inline-block;
+    margin: 1px;
+    text-align: center;
+}
+
+.kv-form-bs3 .hint-block {
+    margin-top: 5px;
+}
+
+td.kv-header-row {
+    background-color: #4ac5d3 !important;
+}
+
+td.kv-header-row strong {
+    color: #ffffff;
+}
+
+.table > tbody > tr.info > td {
+    background-color: #ecf9ff !important;
+}
+
+.order.nav-pills > li.active > a {
+    background-color: #4ac5d3;
+}
+
+#menu {
+    z-index: 9;
+}
+
+.fix-bottom {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+    background-color: #f2f2f2;
+    text-align: center;
+    z-index: 2;
+}
+
+@media (max-width: 480px) {
+    .kv-table-wrap tr > td:first-child {
+        font-size: 1em;
+    }
+}
+
+.stockProduct {
+    max-width: 250px;
+    overflow: auto;
+}
+
+select[aria-readonly="true"]  {
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+    .scrollPanel .left {
+        position: absolute;
+        top: 0px;
+        bottom: 50px;
+        left: 0;
+        width: 80%;
+        overflow-y: auto;
+    }
+
+    .scrollPanel .right {
+        position: absolute;
+        top: 0;
+        bottom: 100px;
+        right: 0;
+        overflow-y: auto;
+        width: 20%;
+        padding-top: 15% !important;
+    }
+    .scrollPanel .w40{
+        width: 40%;
+    }
+    .scrollPanel .w60{
+        width: 60%;
+    }
+    .scrollPanel .w30{
+        width: 30%;
+    }
+    .scrollPanel .w70{
+        width: 70%;
+    }
+    .scrollPanel .no-padding{
+        padding-top: 0% !important;
+    }
+}
+.scrollPanel .right {
+    text-align: center;
+    height: 100%;
+}
+
+.scrollPanel {
+    margin: 0;
+    overflow: hidden;
+    min-height: 85vh;
+}
+.noticeDiv{
+    background-color: #fee54d;
+}
+.info-box {
+    padding: 15px;
+}
+.form-control.disabled{
+    background-color: #eee;
 }

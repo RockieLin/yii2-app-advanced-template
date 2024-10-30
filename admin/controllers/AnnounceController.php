@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 class AnnounceController extends BaseController {
 
     public function init() {
-        $this->title = '資訊發佈';
+        parent::init();
     }
 
     public function actionIndex() {

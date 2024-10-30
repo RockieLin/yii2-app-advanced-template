@@ -11,9 +11,7 @@ use yii\helpers\Html;
 class PermissionController extends BaseController {
 
     public function init() {
-        Yii::$app->params["tmpSubMenuId"] = "user";
-        $this->title = "權限管理";
-        $this->enableCsrfValidation = false;
+        parent::init();
     }
 
     public function actionIndex() {

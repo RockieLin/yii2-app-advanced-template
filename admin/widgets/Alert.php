@@ -49,7 +49,7 @@ class Alert extends \yii\bootstrap\Widget {
     public function init() {
         parent::init();
 
-        $this->getView()->registerJs("window.setTimeout(function() { $(\".flash-alert\").fadeTo(1500, 0).slideUp(500, function(){ $(this).remove(); }); }, 5000);");
+        $this->getView()->registerJs("window.setTimeout(function() { $(\".flash-alert\").fadeTo(1500, 0).slideUp(500, function(){ $(this).remove(); }); }, 8000);");
         $session = \Yii::$app->getSession();
         $flashes = $session->getAllFlashes();
         $appendCss = isset($this->options['class']) ? ' ' . $this->options['class'] : ' flash-alert';

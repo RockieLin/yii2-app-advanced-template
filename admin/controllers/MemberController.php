@@ -12,7 +12,7 @@ use yii\helpers\Url;
 class MemberController extends BaseController {
 
     public function init() {
-        $this->title = '會員管理';
+        parent::init();
     }
 
     public function actionIndex() {

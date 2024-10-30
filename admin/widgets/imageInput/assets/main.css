@@ -1,0 +1,19 @@
+.imageLink {
+    display: block;
+}
+
+.imageContent {
+    max-width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #d2d0d0;
+}
+
+.imgUploadButton {
+    margin-top: 30px;
+}
+.center {
+    text-align: center!important;
+    margin: 0 auto;
+}

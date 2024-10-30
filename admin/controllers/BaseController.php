@@ -4,19 +4,19 @@ use Yii;
 
 class BaseController extends \common\controllers\BaseController {
     public $layout = 'main';
-    public $title = '系統管理介面';
+    public $title  = '系統管理介面';
 
     public function behaviors() {
 
         return \yii\helpers\ArrayHelper::merge([
             'access' => [
-                'class' => \yii\filters\AccessControl::className(),
+                'class'  => \yii\filters\AccessControl::className(),
                 'except' => [
                     'top-login',
                     'login',
                     'error'
                 ],
-                'rules' => [
+                'rules'  => [
                     [
                         'allow' => true,
                         'roles' => ['@'],
@@ -24,7 +24,7 @@ class BaseController extends \common\controllers\BaseController {
                 ],
             ],
             [
-                'class' => '\admin\components\filters\PermissionFilter',
+                'class'  => '\admin\components\filters\PermissionFilter',
                 'except' => [
                     'top-login',
                     'login',
@@ -41,11 +41,10 @@ class BaseController extends \common\controllers\BaseController {
         $this->layout = "base";
 
         if ($exception !== null) {
-            return $this->render("@admin/views/error", array(
+            return $this->render("@admin/views/error", [
                 "exception" => $exception
-            ));
+            ]);
         }
         exit;
     }
-
 }

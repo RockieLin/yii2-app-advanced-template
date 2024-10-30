@@ -2,7 +2,7 @@
 
 use yii\web\AssetBundle;
 
-class ModernBlueAsset extends AssetBundle {
+class ModernWineAsset extends AssetBundle {
 
     public $sourcePath = '@common/assets/Theme/assets';
 //    public $publishOptions = [
@@ -10,7 +10,7 @@ class ModernBlueAsset extends AssetBundle {
 //    ];
 
     public $css = [
-        'css/modern-blue.css',
+        'css/modern-wine.css',
         'css/main.css',
     ];
     public $depends = [

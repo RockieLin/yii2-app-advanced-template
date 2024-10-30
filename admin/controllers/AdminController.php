@@ -15,8 +15,7 @@ use \Exception;
 class AdminController extends BaseController {
 
     public function init() {
-        Yii::$app->params["tmpSubMenuId"] = "admin";
-        $this->title = '後台帳號管理';
+        parent::init();
     }
 
     public function actionIndex() {

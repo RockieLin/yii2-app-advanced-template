@@ -7,7 +7,6 @@ class CoralBaseAsset extends AssetBundle {
     public $sourcePath = '@common/assets/Theme/assets';
     public $css = [
         'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
-        'icons/pictoicons/css/picto.css',
     ];
     public $js = [
         'js/modernizr/modernizr.js',
@@ -17,7 +16,6 @@ class CoralBaseAsset extends AssetBundle {
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        //'yii\jui\JuiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset'
     ];

@@ -1,4 +1,4 @@
-<?php namespace app\components\simpleHtmlDom;
+<?php namespace common\components\simpleHtmlDom;
 
 require_once(dirname(__FILE__) . '/lib/simple_html_dom.php');
 

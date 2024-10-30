@@ -1,3 +1,4 @@
+#備份用 實際執行會從dockerbaobao/nginx:shopTool pull, 不會build此檔案
 FROM nginx:1.17
 
 RUN mkdir -p /etc/nginx/ssl \

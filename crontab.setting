@@ -1,6 +1,0 @@
-#Crontab setting 記錄, 另需去系統設定crontab example:
-#0 */3 * * *  php /var/www/html/yii2-app-advanced-template/yii job/action-name
-
-# 刪除逾期的EmailCheckCode
-# 3小時跑一次
-0 */3 * * *  php /var/www/html/yii2-app-advanced-template/yii job/clear-email-checkcode

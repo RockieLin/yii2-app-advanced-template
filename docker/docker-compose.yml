@@ -2,41 +2,42 @@ version: '3'
 services:
   nginx:
     network_mode: "host"
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: nginx:bao
+    image: dockerbaobao/nginx:sb
     depends_on:
-      - php
-    ports:
-      - "80:80"
-      - "443:443"
+      - php74
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/ssl:/etc/nginx/ssl
-      - ./../../:/var/www/html
+      - /var/www/html:/var/www/html
       - ./log/nginx:/var/log/nginx
     restart: always
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 40000
+        hard: 65535
     container_name: nginx
 
-  php:
+  php74:
     network_mode: "host"
-    build:
-      context: ./php
-      dockerfile: Dockerfile
-    image: php74-fpm
+    image: dockerbaobao/php74:sb
     volumes:
-      - ./../../:/var/www/html
-      - ./php/fpm/php-fpm.conf:/etc/php/7.4/fpm/php-fpm.conf
-      - ./php/fpm/php.ini:/etc/php/7.4/fpm/php.ini
-      - ./php/fpm/www.conf:/etc/php/7.4/fpm/pool.d/www.conf
-      - ./php/cli/php.ini:/etc/php/7.4/cli/php.ini
+      - /var/www/html:/var/www/html
+      - ./php74/fpm/php-fpm.conf:/etc/php/7.4/fpm/php-fpm.conf
+      - ./php74/fpm/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./php74/fpm/www.conf:/etc/php/7.4/fpm/pool.d/www.conf
+      - ./php74/cli/php.ini:/etc/php/7.4/cli/php.ini
       - ./supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
       - ./supervisor/conf.d:/etc/supervisor/conf.d
       - ./log/supervisor:/etc/supervisord.d/log
-      - ./log/php:/var/log/php
+      - ./log/php74:/var/log/php
+      - /docker/php74/init.sh:/docker/php74/init.sh
     restart: always
-    container_name: php
-
-
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 40000
+        hard: 65535
+    container_name: php74
+    command: bash -c "chmod +x /docker/php74/init.sh && /docker/php74/init.sh"

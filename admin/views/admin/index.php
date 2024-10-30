@@ -7,7 +7,10 @@ $this->registerCss(".layout-app .col-separator{background-color: transparent;}")
 
 ?>
 <div class="admin-index">
-    <?php \yii\widgets\Pjax::begin(); ?>
+    <?php \yii\widgets\Pjax::begin([
+        'timeout'         => false,
+        'enablePushState' => true,
+    ]); ?>
     <div class="widget search">
         <div class="widget-body row">
             <div class="col-xs-12 col-md-12">

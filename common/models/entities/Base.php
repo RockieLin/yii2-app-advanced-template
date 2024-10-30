@@ -1,4 +1,4 @@
-<?php namespace app\models\entities;
+<?php namespace common\models\entities;
 
 use Yii;
 use yii\db\ActiveRecord;

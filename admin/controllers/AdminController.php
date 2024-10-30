@@ -1,13 +1,13 @@
 <?php
+
 namespace admin\controllers;
 
-use Yii;
-use yii\web\NotFoundHttpException;
-use admin\models\forms\LoginForm;
 use common\models\entities\Admin;
-use yii\helpers\Url;
+use Exception;
+use Yii;
 use yii\data\ArrayDataProvider;
-use \Exception;
+use yii\helpers\Url;
+use yii\web\NotFoundHttpException;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -24,8 +24,8 @@ class AdminController extends BaseController {
 
         Yii::$app->params["_tmpRoles"] = Admin::getRoles();
         return $this->render('index', [
-                    'searchModel'  => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel'  => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -37,13 +37,14 @@ class AdminController extends BaseController {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', "新增完成");
                 return $this->redirect([
-                            'update',
-                            'id' => $model->id]);
+                    'update',
+                    'id' => $model->id
+                ]);
             }
         }
 
         return $this->render('create', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -62,12 +63,12 @@ class AdminController extends BaseController {
                     $model->password = md5($model->password);
                 }
 
-
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', "修改完成");
                     return $this->redirect([
-                                'update',
-                                'id' => $model->id]);
+                        'update',
+                        'id' => $model->id
+                    ]);
                 }
             }
         }
@@ -75,7 +76,7 @@ class AdminController extends BaseController {
         $model->password = null;
 
         return $this->render('update', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -85,7 +86,8 @@ class AdminController extends BaseController {
         $model->save();
 
         return $this->redirect([
-                    'index']);
+            'index'
+        ]);
     }
 
     public function actionDelete($id) {
@@ -94,7 +96,8 @@ class AdminController extends BaseController {
         Yii::$app->session->setFlash('success', "刪除完成");
 
         return $this->redirect([
-                    'index']);
+            'index'
+        ]);
     }
 
     public function actionLogout() {
@@ -107,8 +110,7 @@ class AdminController extends BaseController {
         $this->title = '角色管理';
         $roles = Yii::$app->authManager->getRoles();
 
-        $data = [
-                ];
+        $data = [];
         foreach ($roles as $key => $value) {
             $data[] = [
                 'id'         => $value->name,
@@ -125,12 +127,13 @@ class AdminController extends BaseController {
             'sort'       => [
                 'attributes' => [
                     'id',
-                    'name'],
+                    'name'
+                ],
             ],
         ]);
 
         return $this->render('role', [
-                    'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -139,6 +142,7 @@ class AdminController extends BaseController {
         Yii::$app->params["modalWidth"] = "40%";
 
         $model = new \admin\models\forms\RoleModel();
+        $model->id = time();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             try {
@@ -157,8 +161,8 @@ class AdminController extends BaseController {
         }
 
         return $this->render('roleForm', [
-                    'model'      => $model,
-                    'disabledId' => false,
+            'model'      => $model,
+            'disabledId' => false,
         ]);
     }
 
@@ -187,8 +191,8 @@ class AdminController extends BaseController {
         }
 
         return $this->render('roleForm', [
-                    'model'      => $model,
-                    'disabledId' => true,
+            'model'      => $model,
+            'disabledId' => true,
         ]);
     }
 
@@ -198,7 +202,8 @@ class AdminController extends BaseController {
 
         //user revokeRole
         foreach (Admin::find()->where([
-            "role" => $role->name])->each() as $user) {
+            "role" => $role->name
+        ])->each() as $user) {
             $user->role = 0;
             $user->save();
         }
@@ -210,7 +215,8 @@ class AdminController extends BaseController {
         Yii::$app->session->setFlash('success', "刪除完成,所有套用此角色的帳號需重新設定權限!");
 
         return $this->redirect([
-                    'role']);
+            'role'
+        ]);
     }
 
     /**
@@ -221,7 +227,7 @@ class AdminController extends BaseController {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Admin::findOne($id)) !== null) {
+        if (($model = Admin::getCache($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

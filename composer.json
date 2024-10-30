@@ -1,56 +1,75 @@
 {
-  "name": "rockielin/yii2-app-advanced-template",
-  "description": "Yii2 advanced template for demo",
-  "type": "project",
+  "name": "yiisoft/yii2-dev",
+  "description": "Yii PHP Framework Version 2 - Development Package",
   "keywords": [
     "yii2",
-    "framework",
-    "advanced",
-    "project template"
+    "framework"
   ],
+  "homepage": "http://www.yiiframework.com/",
+  "type": "yii2-extension",
   "license": "BSD-3-Clause",
-  "authors": [
-    {
-      "name": "Rockie Lin",
-      "email": "rockie.lin.tw@gmail.com",
-      "role": "Developer"
-    }
-  ],
   "support": {
-    "issues": "https://github.com/RockieLin/yii2-app-advanced-template/issues?state=open",
-    "source": "https://github.com/RockieLin/yii2-app-advanced-template"
+    "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+    "forum": "http://www.yiiframework.com/forum/",
+    "wiki": "http://www.yiiframework.com/wiki/",
+    "irc": "irc://irc.freenode.net/yii",
+    "source": "https://github.com/yiisoft/yii2"
   },
-  "minimum-stability": "dev",
   "require": {
     "php": ">=7.0.0",
-    "yiisoft/yii2": "2.0.40",
-    "yiisoft/yii2-bootstrap": "2.0.10",
+    "yiisoft/yii2": "2.0.43",
+    "yiisoft/yii2-httpclient": "2.0.13",
     "yiisoft/yii2-swiftmailer": "2.1.1",
+    "yiisoft/yii2-redis": "2.0.15",
+    "yiisoft/yii2-bootstrap": "2.0.10",
     "yiisoft/yii2-jui": "2.0.7",
-    "yiisoft/yii2-redis": "2.0.12",
-    "yiisoft/yii2-imagine": "2.2.0",
-    "yiisoft/yii2-authclient": "2.2.7",
+    "yiisoft/yii2-imagine": "2.3.0",
+    "yiisoft/yii2-authclient": "2.2.9",
     "vova07/yii2-imperavi-widget": "2.0.11",
+    "vova07/yii2-console-runner-extension": "0.1.2",
     "trntv/yii2-datetime-widget": "1.1.1",
+    "kartik-v/yii2-mpdf": "1.0.6",
     "kartik-v/yii2-export": "1.4.0",
     "kartik-v/yii2-checkbox-x": "1.0.4",
     "kartik-v/yii2-tabs-x": "1.2.7",
     "kartik-v/yii2-widgets": "3.4.1",
+    "kartik-v/yii2-widget-select2": "@dev",
     "kartik-v/yii2-date-range": "1.7.1",
-    "kriss/yii2-log-reader": "2.2.5",
+    "kartik-v/yii2-grid": "3.3.5",
+    "kriss/yii2-log-reader": "2.4",
     "rmrevin/yii2-minify-view": "2.0.0",
     "2amigos/qrcode-library": "1.1.2",
     "steelywing/chinese": "0.5.3",
-    "codemix/yii2-localeurls": "1.7.1",
-    "nirvana-msu/yii2-infinite-scroll": "1.0.*@dev"
+    "daixianceng/yii2-echarts": "1.2.0",
+    "geoip2/geoip2": "2.10.0",
+    "guzzlehttp/guzzle": "6.5.2",
+    "borales/yii2-phone-input": "0.3.0",
+    "ext-bcmath": "*",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "alexandernst/yii2-device-detect": "0.0.12",
+    "codemix/yii2-localeurls": "1.8.0",
+    "2amigos/yii2-multi-select-widget": "1.0.0",
+    "kartik-v/yii2-field-range": "1.3.5",
+    "nirvana-msu/yii2-infinite-scroll": "1.0.*@dev",
+    "bower-asset/infinite-scroll": "3.0.6",
+    "unclead/yii2-multiple-input": "2.27.0",
+    "wdmg/yii2-tagsinput": "1.0.4",
+    "mrssoft/yii2-sitemap": "^2.0",
+    "firebase/php-jwt": "5.5.1",
+    "ecpay/sdk": "1.2.2210310",
+    "linecorp/line-bot-sdk": "^7.6",
+    "2amigos/yii2-ckeditor-widget": "2.1.1",
+    "php-webdriver/webdriver": "^1.15.0",
+    "wbraganca/yii2-dynamicform": "*",
+    "phpoffice/phpword": "dev-master",
+    "dompdf/dompdf": "dev-master",
+    "spipu/html2pdf": "dev-master",
+    "bilginnet/yii2-cropper": "dev-master"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "~2.0.0",
-    "yiisoft/yii2-gii": "~2.0.0",
-    "yiisoft/yii2-faker": "~2.0.0",
-    "codeception/base": "^2.4.0",
-    "phpunit/phpunit": "~6.5.5",
-    "codeception/verify": "~1.0.0"
+    "yiisoft/yii2-debug": "2.1.18",
+    "yiisoft/yii2-gii": "~2.0.0"
   },
   "repositories": [
     {
@@ -58,12 +77,14 @@
       "url": "https://asset-packagist.org"
     }
   ],
+  "minimum-stability": "dev",
   "config": {
     "discard-changes": true,
     "process-timeout": 1800,
     "fxp-asset": {
       "enabled": false
-    }
+    },
+    "allow-plugins": true
   },
   "scripts": {
     "post-install-cmd": [
@@ -85,6 +106,7 @@
           "front/web/minify": "0777",
           "api/runtime": "0777",
           "api/web/assets": "0777",
+          "api/web/minify": "0777",
           "yii": "0755"
         }
       ]

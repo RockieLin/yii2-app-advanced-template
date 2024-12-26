@@ -172,6 +172,11 @@ $config = [
             'serializer'      => ['igbinary_serialize', 'igbinary_unserialize'],
             'defaultDuration' => $params["enableCache"] ? (43200) : 1,
         ],
+//        'cache'         => [
+//            'class'           => 'yii\caching\FileCache',
+//            'cachePath'       => '@common/runtime/cache',
+//            'defaultDuration' => 0,
+//        ],
         'mailer'     => [
             'class'    => 'common\components\Mailer',
             'viewPath' => '@common/mail',

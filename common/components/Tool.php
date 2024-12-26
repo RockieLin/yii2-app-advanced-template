@@ -1,24 +1,23 @@
 <?php namespace common\components;
 
+use common\components\HttpException;
+use common\components\type;
 use common\models\entities\Config;
 use common\models\entities\EmailCheckCodes;
-use common\models\entities\Member;
 use common\models\entities\Performance;
+use common\models\entities\PhoneCheckCodes;
+use Exception;
+use libphonenumber\PhoneNumberUtil;
+use SteelyWing\Chinese\Chinese;
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 use yii\helpers\Url;
-use common\models\entities\PhoneCheckCodes;
-use SteelyWing\Chinese\Chinese;
-use yii\httpclient\Client;
-use yii\web\HttpException;
-use Exception;
 
 class Tool extends Component {
     protected $decimals = 4;
 
     public function toBaseUrl($route, $fullPath = false) {
-        return Url::to($route, $fullPath);
+        return str_replace("/#", "#", Url::to($route, $fullPath));
     }
 
     public function toCommonUrl($route) {
@@ -31,8 +30,18 @@ class Tool extends Component {
      * @return type
      */
     public function toCurrent($paramAry, $scheme = false) {
+        $url = Url::current($paramAry, $scheme);
+        $url = str_replace("/" . Yii::$app->defaultRoute, "", $url);
+        $url = str_replace("/" . Yii::$app->controller->defaultAction, "", $url);
+        return $url;
+    }
 
-        return Url::current($paramAry, $scheme);
+    public function getAlternateUrl($lang) {
+        if (isset(Yii::$app->params['alternateUrl'][$lang])) {
+            return Yii::$app->params['alternateUrl'][$lang];
+        } else {
+            return $this->toCurrent(['language' => $lang], true);
+        }
     }
 
     public function formatErrorMsg($errorsAry, $displayHtml = false) {
@@ -53,12 +62,9 @@ class Tool extends Component {
         return $result;
     }
 
-    public function sendMail($toEmail, $toBcc = null, $subject = null, $parameter = array(), $viewName = "default") {
-        $email = Yii::$app->setting->get("sendFromMail");
-        $response = Yii::$app->mailer->compose($viewName, $parameter)
-            ->setFrom([$email => $email])
-            ->setTo($toEmail)
-            ->setSubject($subject);
+    public function sendMail($toEmail, $toBcc = null, $subject = null, $parameter = [], $viewName = "default") {
+        $email = Config::getCacheByKey('email')->content;
+        $response = Yii::$app->mailer->compose($viewName, $parameter)->setFrom([$email => $email])->setTo($toEmail)->setSubject($subject);
 
         if (($toEmail != $toBcc) && ($toBcc != null)) {
             $response->setBcc($toBcc);
@@ -74,13 +80,13 @@ class Tool extends Component {
         $checkCode = $this->generatorRandomString();
 
         $emailModel->deleteAll("member_id = '{$user->id}'");
-        $emailModel->attributes = array(
-            "member_id" => $user->id,
+        $emailModel->attributes = [
+            "member_id"  => $user->id,
             "check_code" => $checkCode,
-            'email' => $user->email,
-            'type' => $type,
-            'other' => $other,
-        );
+            'email'      => $user->email,
+            'type'       => $type,
+            'other'      => $other,
+        ];
 
         if (!$emailModel->save()) {
             throw new \yii\web\HttpException(400, $this->formatErrorMsg($emailModel->getErrors()));
@@ -92,7 +98,7 @@ class Tool extends Component {
             $url = $this->toBaseUrl([
                 "user/regist-email-confirm",
                 "checkCode" => $checkCode,
-                "language" => Yii::$app->language
+                "language"  => Yii::$app->language
             ], true);
         } elseif ($type == EmailCheckCodes::TYPE_FORGET_PASSWORD) {
             $subject = Yii::t('app', 'mailCheckCodeTitle')["forgetPwd"];
@@ -100,17 +106,17 @@ class Tool extends Component {
             $url = $this->toBaseUrl([
                 "user/forget-pwd-confirm",
                 "checkCode" => $checkCode,
-                "language" => Yii::$app->language
+                "language"  => Yii::$app->language
             ], true);
         } else {
             throw new \yii\web\HttpException(400, "認證碼類型有誤");
         }
 
-        return $this->sendMail($user->email, $user->email, $subject, array(
-            "user" => $user,
-            "url" => $url,
+        return $this->sendMail($user->email, $user->email, $subject, [
+            "user"  => $user,
+            "url"   => $url,
             "other" => $other,
-        ), $view);
+        ], $view);
     }
 
     public function mask_email($email, $mask_char = "*", $percent = 50) {
@@ -198,21 +204,20 @@ class Tool extends Component {
             }
             $_margin = $_marginWidth > $_marginHeight ? $_marginWidth : $_marginHeight;
 
-            \yii\imagine\Image::frame($target, (int) $_margin, "FFF")->save($target);
+            \yii\imagine\Image::frame($target, (int)$_margin, "FFF")->save($target);
 
             $newWidth = $_width;
             $newHeight = $_height;
         } else {
             //寬度太長先縮寬度
             $newWidth = $_thumbWidth;
-            $newHeight = (int) (($_thumbWidth / $_width) * $_height);
-            \yii\imagine\Image::resize($target, $newWidth, $newHeight)
-                ->save($target);
+            $newHeight = (int)(($_thumbWidth / $_width) * $_height);
+            \yii\imagine\Image::resize($target, $newWidth, $newHeight)->save($target);
 
             if ($newHeight < $_thumbHeight) {
                 //高度不夠加padding 再縮圖
                 $_margin = ($_thumbHeight - $newHeight) / 2;
-                \yii\imagine\Image::frame($target, (int) $_margin, "FFF")->save($target);
+                \yii\imagine\Image::frame($target, (int)$_margin, "FFF")->save($target);
             }
         }
 
@@ -227,8 +232,107 @@ class Tool extends Component {
     }
 
     public function isJson($string) {
-        $array = json_decode($string, true);
+        $array = @json_decode($string, true);
         return !empty($string) && is_string($string) && is_array($array) && !empty($array) && json_last_error() == 0;
+    }
+
+    public function toProxyImg($url) {
+        return Yii::$app->params["staticFileUrl"] . "/img/" . bin2hex($url) . ".webp";
+    }
+
+    public function getChineseWeekday($unixtime) {
+        $weekday = date('w', $unixtime);
+        return '星期' . [
+                            '日',
+                            '一',
+                            '二',
+                            '三',
+                            '四',
+                            '五',
+                            '六'
+                        ][$weekday];
+    }
+
+    public function webpImage($source, $quality = 100, $removeOld = true) {
+        $dir = pathinfo($source, PATHINFO_DIRNAME);
+        $name = pathinfo($source, PATHINFO_FILENAME);
+        $destination = $dir . DIRECTORY_SEPARATOR . $name . '.webp';
+        $info = getimagesize($source);
+
+        if (!$info) {
+            return false;
+        }
+
+        $isAlpha = false;
+
+        if ($info['mime'] == 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+        } elseif ($isAlpha = $info['mime'] == 'image/gif') {
+            $image = imagecreatefromgif($source);
+        } elseif ($isAlpha = $info['mime'] == 'image/png') {
+            $image = imagecreatefrompng($source);
+        } else {
+            return false;
+        }
+        if ($isAlpha) {
+            imagepalettetotruecolor($image);
+            imagealphablending($image, true);
+            imagesavealpha($image, true);
+        }
+        imagewebp($image, $destination, $quality);
+
+        if ($removeOld) {
+            unlink($source);
+        }
+
+        return true;
+    }
+
+    public function pngImage($source, $quality = 100, $removeOld = true) {
+        $dir = pathinfo($source, PATHINFO_DIRNAME);
+        $name = pathinfo($source, PATHINFO_FILENAME);
+        $destination = $dir . DIRECTORY_SEPARATOR . $name . '.png';
+        $info = getimagesize($source);
+
+        if (!$info) {
+            return false;
+        }
+
+        $isAlpha = false;
+        if ($info['mime'] == 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+        } elseif ($isAlpha = $info['mime'] == 'image/gif') {
+            $image = imagecreatefromgif($source);
+        } elseif ($isAlpha = $info['mime'] == 'image/webp') {
+            $image = imagecreatefromwebp($source);
+        }elseif ($isAlpha = $info['mime'] == 'image/png') {
+            $image = imagecreatefrompng($source);
+        } else {
+            return false;
+        }
+        if ($isAlpha) {
+            imagepalettetotruecolor($image);
+            imagealphablending($image, true);
+            imagesavealpha($image, true);
+        }
+
+        imagepng($image, $destination, $quality);
+
+        if ($removeOld) {
+            unlink($source);
+        }
+
+        return true;
+    }
+
+    public function genTransactionId($prefix, $length = 3) {
+        $TransactionCode = "";
+        for ($i = 0; $i <= $length; $i++) {
+            $TransactionCode .= mt_rand(0, 9);
+        }
+
+        $TransactionCode = $prefix . date("YmdHis") . $TransactionCode;
+        return $TransactionCode;
     }
 
     public function twTocn($string) {
@@ -241,186 +345,187 @@ class Tool extends Component {
         return $chinese->to(Chinese::CHT, $string);
     }
 
-    /**
-     * @param array $paths
-     * @param $currentUrl
-     * @param $returnString
-     * @return string
-     */
-    public function showNavClass(Array $paths, $currentUrl, $returnString) {
-        $result = "";
-        for ($i = 0; $i < count($paths); $i++) {
-            $arrUrlPath = explode("?", $currentUrl);
-            if ($arrUrlPath[0] != $paths[$i]) {
-                continue;
-            }
-            $paths[$i] = str_replace('/', '\/', $paths[$i]);
-            if (preg_match('/' . $paths[$i] . '\?{0,1}\S{0,}$/', $currentUrl)) {
-                $result = $returnString;
-                break;
-            }
+    public function safeEncrypt(string $message, $keyname = "encryptKey"): string {
+        $key = $this->getEncryptKey($keyname);
+        if (mb_strlen($key, '8bit') !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES) {
+            throw new Exception('Key is not the correct size (must be 32 bytes).');
         }
-        return $result;
+        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+
+        $cipher = base64_encode($nonce . sodium_crypto_secretbox($message, $nonce, $key));
+        sodium_memzero($message);
+        sodium_memzero($key);
+        return base64_encode($cipher);
+    }
+
+    /*
+     * 字串加密
+     */
+
+    public function getEncryptKey($keyname = "encryptKey") {
+        return base64_decode(Yii::$app->params[$keyname]);
+    }
+
+    /*
+     * 字串解密
+     */
+
+    public function safeDecrypt(string $encrypted, $keyname = "encryptKey"): string {
+        try {
+            $encrypted = base64_decode($encrypted);
+            $key = $this->getEncryptKey($keyname);
+            $decoded = base64_decode($encrypted);
+            $nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
+            $ciphertext = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
+
+            $plain = sodium_crypto_secretbox_open($ciphertext, $nonce, $key);
+            if (!is_string($plain)) {
+                throw new Exception('Invalid MAC');
+            }
+            sodium_memzero($ciphertext);
+            sodium_memzero($key);
+
+            return $plain;
+        } catch (Exception $ex) {
+            throw new Exception('加密參數不合法');
+        }
     }
 
     /**
-     * 由useragent拆解登入資訊
-     * @param $usString
-     * @return array
+     * 格式化電話號碼
+     * @param $phone
+     * @return string
+     * @throws HttpException
      */
-    public function parseUserAgent($u_agent) {
-        if ($u_agent === null && isset($_SERVER['HTTP_USER_AGENT'])) {
-            $u_agent = $_SERVER['HTTP_USER_AGENT'];
-        }
-        if ($u_agent === null) {
-            throw new \InvalidArgumentException('parse_user_agent requires a user agent');
-        }
-        $platform = null;
-        $browser = null;
-        $version = null;
-        $empty = array('platform' => $platform, 'browser' => $browser, 'version' => $version);
-        if (!$u_agent) {
-            return $empty;
-        }
-        if (preg_match('/\((.*?)\)/m', $u_agent, $parent_matches)) {
-            preg_match_all('/(?P<platform>BB\d+;|Android|CrOS|Tizen|iPhone|iPad|iPod|Linux|(Open|Net|Free)BSD|Macintosh|Windows(\ Phone)?|Silk|linux-gnu|BlackBerry|PlayBook|X11|(New\ )?Nintendo\ (WiiU?|3?DS|Switch)|Xbox(\ One)?)
-				(?:\ [^;]*)?
-				(?:;|$)/imx', $parent_matches[1], $result);
-            $priority = array(
-                'Xbox One', 'Xbox', 'Windows Phone', 'Tizen', 'Android', 'FreeBSD', 'NetBSD', 'OpenBSD', 'CrOS',
-                'X11'
-            );
-            $result['platform'] = array_unique($result['platform']);
-            if (count($result['platform']) > 1) {
-                if ($keys = array_intersect($priority, $result['platform'])) {
-                    $platform = reset($keys);
-                } else {
-                    $platform = $result['platform'][0];
-                }
-            } elseif (isset($result['platform'][0])) {
-                $platform = $result['platform'][0];
+    public function formatPhone($phone, $onlyTw = false) {
+        $phoneNumberUtil = PhoneNumberUtil::getInstance();
+        try {
+            if (strpos($phone, "09") === 0) {
+                $phone = substr($phone, 2);
+                $phone = "+8869" . $phone;
             }
+            $phoneNumberObject = $phoneNumberUtil->parse($phone);
+        } catch (Exception $ex) {
+            $phoneNumberUtil = null;
+            throw new Exception('手機格式錯誤');
         }
-        if ($platform == 'linux-gnu' || $platform == 'X11') {
-            $platform = 'Linux';
-        } elseif ($platform == 'CrOS') {
-            $platform = 'Chrome OS';
-        }
-        preg_match_all('%(?P<browser>Camino|Kindle(\ Fire)?|Firefox|Iceweasel|IceCat|Safari|MSIE|Trident|AppleWebKit|
-				TizenBrowser|(?:Headless)?Chrome|YaBrowser|Vivaldi|IEMobile|Opera|OPR|Silk|Midori|Edge|Edg|CriOS|UCBrowser|Puffin|OculusBrowser|SamsungBrowser|
-				Baiduspider|Googlebot|YandexBot|bingbot|Lynx|Version|Wget|curl|
-				Valve\ Steam\ Tenfoot|
-				NintendoBrowser|PLAYSTATION\ (\d|Vita)+)
-				(?:\)?;?)
-				(?:(?:[:/ ])(?P<version>[0-9A-Z.]+)|/(?:[A-Z]*))%ix',
-            $u_agent, $result);
-        // If nothing matched, return null (to avoid undefined index errors)
-        if (!isset($result['browser'][0]) || !isset($result['version'][0])) {
-            if (preg_match('%^(?!Mozilla)(?P<browser>[A-Z0-9\-]+)(/(?P<version>[0-9A-Z.]+))?%ix', $u_agent, $result)) {
-                return array(
-                    'platform' => $platform ?: null, 'browser' => $result['browser'],
-                    'version' => isset($result['version']) ? $result['version'] ?: null : null
-                );
-            }
-            return $empty;
-        }
-        if (preg_match('/rv:(?P<version>[0-9A-Z.]+)/i', $u_agent, $rv_result)) {
-            $rv_result = $rv_result['version'];
-        }
-        $browser = $result['browser'][0];
-        $version = $result['version'][0];
-        $lowerBrowser = array_map('strtolower', $result['browser']);
-        $find = function ($search, &$key, &$value = null) use ($lowerBrowser) {
-            $search = (array) $search;
-            foreach ($search as $val) {
-                $xkey = array_search(strtolower($val), $lowerBrowser);
-                if ($xkey !== false) {
-                    $value = $val;
-                    $key = $xkey;
-                    return true;
-                }
-            }
-            return false;
-        };
-        $key = 0;
-        $val = '';
-        if ($browser == 'Iceweasel' || strtolower($browser) == 'icecat') {
-            $browser = 'Firefox';
-        } elseif ($find('Playstation Vita', $key)) {
-            $platform = 'PlayStation Vita';
-            $browser = 'Browser';
-        } elseif ($find(array('Kindle Fire', 'Silk'), $key, $val)) {
-            $browser = $val == 'Silk' ? 'Silk' : 'Kindle';
-            $platform = 'Kindle Fire';
-            if (!($version = $result['version'][$key]) || !is_numeric($version[0])) {
-                $version = $result['version'][array_search('Version', $result['browser'])];
-            }
-        } elseif ($find('NintendoBrowser', $key) || $platform == 'Nintendo 3DS') {
-            $browser = 'NintendoBrowser';
-            $version = $result['version'][$key];
-        } elseif ($find('Kindle', $key, $platform)) {
-            $browser = $result['browser'][$key];
-            $version = $result['version'][$key];
-        } elseif ($find('OPR', $key)) {
-            $browser = 'Opera Next';
-            $version = $result['version'][$key];
-        } elseif ($find('Opera', $key, $browser)) {
-            $find('Version', $key);
-            $version = $result['version'][$key];
-        } elseif ($find('Puffin', $key, $browser)) {
-            $version = $result['version'][$key];
-            if (strlen($version) > 3) {
-                $part = substr($version, -2);
-                if (ctype_upper($part)) {
-                    $version = substr($version, 0, -2);
-                    $flags = array(
-                        'IP' => 'iPhone', 'IT' => 'iPad', 'AP' => 'Android', 'AT' => 'Android',
-                        'WP' => 'Windows Phone', 'WT' => 'Windows'
-                    );
-                    if (isset($flags[$part])) {
-                        $platform = $flags[$part];
-                    }
-                }
-            }
-        } elseif ($find('YaBrowser', $key, $browser)) {
-            $browser = 'Yandex';
-            $version = $result['version'][$key];
-        } elseif ($find(array('Edge', 'Edg'), $key, $browser)) {
-            $browser = 'Edge';
-            $version = $result['version'][$key];
-        } elseif ($find(array(
-            'IEMobile', 'Midori', 'Vivaldi', 'OculusBrowser', 'SamsungBrowser', 'Valve Steam Tenfoot', 'Chrome',
-            'HeadlessChrome'
-        ), $key, $browser)) {
-            $version = $result['version'][$key];
-        } elseif ($rv_result && $find('Trident', $key)) {
-            $browser = 'MSIE';
-            $version = $rv_result;
-        } elseif ($find('UCBrowser', $key)) {
-            $browser = 'UC Browser';
-            $version = $result['version'][$key];
-        } elseif ($find('CriOS', $key)) {
-            $browser = 'Chrome';
-            $version = $result['version'][$key];
-        } elseif ($browser == 'AppleWebKit') {
-            if ($platform == 'Android') {
-                $browser = 'Android Browser';
-            } elseif (strpos($platform, 'BB') === 0) {
-                $browser = 'BlackBerry Browser';
-                $platform = 'BlackBerry';
-            } elseif ($platform == 'BlackBerry' || $platform == 'PlayBook') {
-                $browser = 'BlackBerry Browser';
-            } else {
-                $find('Safari', $key, $browser) || $find('TizenBrowser', $key, $browser);
-            }
-            $find('Version', $key);
-            $version = $result['version'][$key];
-        } elseif ($pKey = preg_grep('/playstation \d/i', $result['browser'])) {
-            $pKey = reset($pKey);
-            $platform = 'PlayStation ' . preg_replace('/\D/', '', $pKey);
-            $browser = 'NetFront';
-        }
-        return array('platform' => $platform ?: null, 'browser' => $browser ?: null, 'version' => $version ?: null);
 
+        if ($phoneNumberObject) {
+            $result = $phoneNumberUtil->isValidNumber($phoneNumberObject);
+
+            if (!$result) {
+                throw new Exception('手機格式錯誤');
+            }
+        }
+        if ($onlyTw && $phoneNumberObject->getCountryCode() != "886") {
+            throw new Exception('目前僅支援台灣手機門號');
+        }
+
+        $result = [
+            "country_code" => $phoneNumberObject->getCountryCode(),
+            "number"       => $phoneNumberObject->getNationalNumber(),
+            "full_format"  => "+" . $phoneNumberObject->getCountryCode() . $phoneNumberObject->getNationalNumber(),
+        ];
+
+        return $result;
+    }
+
+    //設定購物車返回網址
+    public function setCartCloseUrl($url) {
+        Yii::$app->session->set("cartCloseUrl", $url);
+    }
+
+    //取得購物車返回網址
+    public function getCartCloseUrl() {
+        $url = Yii::$app->session->get("cartCloseUrl");
+        if (empty($url) || strpos($url, "member") !== false || strpos($url, "checkout") !== false || strpos($url, "cart") !== false || parse_url($url)['host'] != Yii::$app->request->serverName) {
+            if (Yii::$app->controller->singleSale) {
+                return "/";
+            } else {
+                return "/product";
+            }
+        } else {
+            return $url;
+        }
+    }
+
+    //訂單身份紀錄
+    public function setOrderSession($phone) {
+        Yii::$app->session->set("orderSession", $phone);
+    }
+
+    //取得訂單身份紀錄
+    public function getOrderSession() {
+        return Yii::$app->session->get("orderSession");
+    }
+
+    public function getMediaThumb($mediaType, $mediaUrl, $defaultImg) {
+        if ($mediaType == 'youtube') {
+            $code = explode("/", $mediaUrl);
+            $code = $code[count($code) - 1];
+            return "https://img.youtube.com/vi/{$code}/hqdefault.jpg";
+        } else {
+            return $defaultImg;
+        }
+    }
+
+
+    function isIos() {
+        $iPod = strpos($_SERVER['HTTP_USER_AGENT'], "iPod");
+        $iPhone = strpos($_SERVER['HTTP_USER_AGENT'], "iPhone");
+        $iPad = strpos($_SERVER['HTTP_USER_AGENT'], "iPad");
+
+        if ($iPad || $iPhone || $iPod) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getImageSize($fileUrl) {
+        if (strpos($fileUrl, Yii::$app->params["staticFileUrl"]) !== false) {
+            $filePath = Yii::getAlias('@common') . '/web' . str_replace(Yii::$app->params["staticFileUrl"], "", $fileUrl);
+            $info = getimagesize($filePath);
+        } else {
+            $info = getimagesize($fileUrl);
+        }
+        $result = [
+            'width'  => $info[0],
+            'height' => $info[1],
+            'mime'   => $info['mime'],
+        ];
+        return $result;
+    }
+
+    function getWebpToSeoImgUrl($fileUrl, $quality = 90) {
+        try {
+            $pathInfo = pathinfo($fileUrl);
+            $ext = $pathInfo['extension'];
+            if ($ext != 'webp') {
+                //非webp直接回傳
+                return $fileUrl;
+            }
+            $filePath = Yii::getAlias('@common') . '/web' . str_replace(Yii::$app->params["staticFileUrl"], "", $fileUrl);
+
+            $im = imagecreatefromwebp($filePath);
+            $newPath = Yii::getAlias('@common') . '/web/uploads/seo/' . $pathInfo['filename'] . ".jpg";
+            $newUrl = Yii::$app->params["staticFileUrl"] . '/uploads/seo/' . $pathInfo['filename'] . ".jpg";
+            if (!file_exists($newPath)) {
+                $result = imagejpeg($im, $newPath, $quality);
+                imagedestroy($im);
+                if (!$result) {
+                    return $fileUrl;
+                }
+            }
+            return $newUrl;
+        } catch (Exception $ex) {
+            return $fileUrl;
+        }
+    }
+
+    public function imageFileToBase64($path){
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = base64_encode(file_get_contents($path));
+        return "data:image/{$type};base64, {$data}";
     }
 }

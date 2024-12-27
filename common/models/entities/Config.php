@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\entities;
+namespace app\models\entities;
 
 use common\models\entities\Base;
 use Yii;
@@ -20,10 +20,16 @@ use Yii;
  */
 class Config extends Base {
 
-    const     CONFIG_TYPE = [
+    const     TYPE_LIST = [
         "text"   => "文字",
         "editor" => "編輯器",
         "image"  => "圖片",
+    ];
+
+    const     CATEGORY_LIST = [
+        //        "site"    => "站台設定",
+        //        "wording" => "頁面文案",
+        //        "system"  => "系統設定",
     ];
 
     public static function tableName() {
